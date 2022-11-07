@@ -1,0 +1,28 @@
+<launch>
+  
+    <!-- Launch Gazebo  -->
+    <!--include可以包括其他的launch文件，可以使用$(find package_name)访问包，可以简短路径表示-->
+    <include file="$(find mbot_gazebo)/launch/mbot_with_arm_world.launch" />
+
+    <!-- ros_control arm launch file -->
+    <include file="$(find mbot_gazebo)/launch/arm_gazebo_states.launch" />   
+
+    <!-- ros_control trajectory control dof arm launch file -->
+    <!--手臂轨迹生成控制器-->
+    <include file="$(find mbot_gazebo)/launch/arm_trajectory_controller.launch" />
+
+    <!-- moveit launch file -->
+    <!--调用moveit!-->
+    <include file="$(find marm_moveit_config)/launch/moveit_planning_execution.launch" />
+
+    <!-- 运行depthimage_to_laserscan节点，将点云深度数转换成激光数据 -->
+    <!--启动了一个节点，可以将深度相机获得的点云数据转化成激光数据-->
+    <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" output="screen">
+        <!--主要是在subscriber里面用的，使用之后，只接受to后面的内容-->
+        <remap from="image" to="/melodic/depth/image_raw" />
+        <remap from="camera_info" to="/melodic/depth/camera_info" />
+        <remap from="scan" to="/scan" />
+        <param name="output_frame_id" value="/melodic_link" />
+    </node>
+
+</launch>
