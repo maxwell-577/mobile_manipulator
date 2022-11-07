@@ -1,0 +1,2 @@
+mbot_gazebo
+-DCATKIN_DEVEL_PREFIX=/home/dinghao/mobile_manipulator/devel -DCMAKE_INSTALL_PREFIX=/home/dinghao/mobile_manipulator/install -G Unix Makefiles
